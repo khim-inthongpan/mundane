@@ -70,6 +70,15 @@ body {
     serif;
 }
 
+body {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
 /* ===================================== */
 /* LAYOUT */
 /* ===================================== */
@@ -81,16 +90,14 @@ body {
   min-height:
     100dvh;
 
-  padding:
-    24px 0 40px;
-
   display: flex;
 
   align-items: center;
 
   justify-content: center;
 
-  position: relative;
+  padding:
+    24px 0 40px;
 }
 
 /* ===================================== */
@@ -159,6 +166,9 @@ body {
   object-fit: cover;
 
   display: none;
+
+  image-orientation:
+    from-image;
 
   filter:
     saturate(0)
@@ -517,11 +527,14 @@ canvas.show {
 
   .page {
 
-    width: 92vw;
+    width: 88vw;
 
-    height: 34vh;
+    aspect-ratio:
+      3 / 4;
 
-    max-height: 300px;
+    height: auto;
+
+    max-height: 42vh;
   }
 
   .page.left {
@@ -538,13 +551,15 @@ canvas.show {
 
   .spiral {
 
-    width: 92vw;
+    width: 88vw;
 
     height: 8px;
 
     flex-direction: row;
 
     justify-content: space-evenly;
+
+    align-items: center;
 
     margin:
       -2px 0;
@@ -647,7 +662,6 @@ canvas.show {
       <div class="ring"></div>
       <div class="ring"></div>
       <div class="ring"></div>
-      <div class="ring"></div>
 
     </div>
 
@@ -685,8 +699,6 @@ canvas.show {
     </div>
 
   </div>
-
-  <!-- BUTTON -->
 
   <div
     class="bottom-button"
@@ -934,8 +946,6 @@ async function generateVisualPoetry(
   let h =
     rect.height * dpr;
 
-  /* MOBILE SAFE LIMIT */
-
   const maxSize = 1400;
 
   if (w > maxSize) {
@@ -951,8 +961,6 @@ async function generateVisualPoetry(
   canvas.width = w;
 
   canvas.height = h;
-
-  /* IMAGE CROP */
 
   const imgRatio =
     img.width / img.height;
@@ -992,6 +1000,8 @@ async function generateVisualPoetry(
       (h - drawHeight) / 2;
   }
 
+  ctx.save();
+
   ctx.drawImage(
     img,
     offsetX,
@@ -999,6 +1009,8 @@ async function generateVisualPoetry(
     drawWidth,
     drawHeight
   );
+
+  ctx.restore();
 
   const imageData =
     ctx.getImageData(
