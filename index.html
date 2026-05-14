@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Visual Poetry Postcard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <!-- WEBSITE FONT -->
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- VISUAL POETRY FONT -->
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+
+      --bg:
+        #111111;
+
+      --text:
+        #f2f2f2;
+
+      --spiral:
+        #141414;
+    }
+
+    body {
+
+      margin: 0;
+
+      width: 100vw;
+      height: 100vh;
+
+      overflow: hidden;
+
+      background:
+        var(--bg);
+
+      color:
+        var(--text);
+
+      font-family:
+        "Instrument Serif",
+        serif;
+    }
+
+    /* ===================================== */
+    /* LAYOUT */
+    /* ===================================== */
+
+    .layout {
+
+      width: 100%;
+      height: 100%;
+
+      padding:
+        24px 0 40px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: relative;
+    }
+
+    /* ===================================== */
+    /* BOOK */
+    /* ===================================== */
+
+    .book {
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      position: relative;
+
+      transform:
+        scale(0.9);
+    }
+
+    .page {
+
+      width: 470px;
+      height: 680px;
+
+      overflow: hidden;
+
+      position: relative;
+    }
+
+    .page.left {
+
+      background:
+        #efefef;
+
+      border-radius:
+        14px 0 0 14px;
+    }
+
+    .page.right {
+
+      background:
+        #000;
+
+      border-radius:
+        0 14px 14px 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ===================================== */
+    /* IMAGE */
+    /* ===================================== */
+
+    .image-preview {
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      display: none;
+
+      filter:
+        saturate(2.1)
+        contrast(1.18)
+        brightness(1.03);
+    }
+
+    /* GRAIN */
+
+    .page.left::after {
+
+      content: "";
+
+      position: absolute;
+
+      inset: 0;
+
+      pointer-events: none;
+
+      opacity: 0.28;
+
+      mix-blend-mode: overlay;
+
+      background-image:
+        radial-gradient(
+          rgba(0,0,0,0.45) 1px,
+          transparent 1px
+        );
+
+      background-size:
+        4px 4px;
+    }
+
+    /* ===================================== */
+    /* UPLOAD */
+    /* ===================================== */
+
+    .upload-wrap {
+
+      position: absolute;
+
+      inset: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upload-label {
+
+      cursor: pointer;
+
+      font-size: 24px;
+
+      color:
+        #222;
+    }
+
+    input[type="file"] {
+
+      display: none;
+    }
+
+    /* ===================================== */
+    /* MESSAGE */
+    /* ===================================== */
+
+    .message-wrap {
+
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: center;
+
+      position: relative;
+    }
+
+    .message-input {
+
+      width: 72%;
+
+      background: none;
+      border: none;
+      outline: none;
+
+      resize: none;
+
+      text-align: center;
+
+      font-family:
+        "Instrument Serif",
+        serif;
+
+      font-size: 26px;
+
+      line-height: 1.6;
+
+      color:
+        rgba(255,255,255,0.92);
+
+      caret-color:
+        white;
+    }
+
+    .message-input::placeholder {
+
+      color:
+        rgba(255,255,255,0.2);
+    }
+
+    /* ===================================== */
+    /* SEND */
+    /* ===================================== */
+
+    .send-button {
+
+      position: absolute;
+
+      bottom: 34px;
+      left: 50%;
+
+      transform:
+        translateX(-50%);
+
+      background: none;
+      border: none;
+
+      color:
+        rgba(255,255,255,0.9);
+
+      font-family:
+        "Instrument Serif",
+        serif;
+
+      font-size: 22px;
+
+      cursor: pointer;
+    }
+
+    /* ===================================== */
+    /* LOADING */
+    /* ===================================== */
+
+    .loading-text {
+
+      position: absolute;
+
+      color:
+        rgba(255,255,255,0.8);
+
+      font-family:
+        "IBM Plex Mono",
+        monospace;
+
+      font-size: 14px;
+
+      opacity: 0;
+    }
+
+    /* ===================================== */
+    /* CANVAS */
+    /* ===================================== */
+
+    canvas {
+
+      width: 100%;
+      height: 100%;
+
+      display: none;
+
+      opacity: 0;
+
+      clip-path:
+        inset(0 0 100% 0);
+
+      transition:
+        clip-path 16s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 16s ease;
+    }
+
+    canvas.show {
+
+      opacity: 1;
+
+      clip-path:
+        inset(0 0 0% 0);
+    }
+
+    /* ===================================== */
+    /* SPIRAL */
+    /* ===================================== */
+
+    .spiral {
+
+      width: 24px;
+
+      height: 680px;
+
+      position: relative;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+
+      margin:
+        0 -1px;
+
+      z-index: 10;
+    }
+
+    .spiral-line {
+
+      position: absolute;
+
+      width: 6px;
+
+      height: 100%;
+
+      background:
+        #111;
+
+      left: 50%;
+
+      transform:
+        translateX(-50%);
+
+      border-radius: 999px;
+    }
+
+    .ring {
+
+      width: 46px;
+      height: 10px;
+
+      border-radius: 999px;
+
+      background:
+        var(--spiral);
+
+      position: relative;
+    }
+
+    .ring::before,
+    .ring::after {
+
+      content: "";
+
+      position: absolute;
+
+      width: 8px;
+      height: 8px;
+
+      background:
+        var(--bg);
+
+      border-radius: 50%;
+
+      top: 1px;
+    }
+
+    .ring::before {
+
+      left: 6px;
+    }
+
+    .ring::after {
+
+      right: 6px;
+    }
+
+    /* ===================================== */
+    /* ADD PAGE BUTTON */
+    /* ===================================== */
+
+    .bottom-button {
+
+      position: fixed;
+
+      left: 50%;
+      bottom: 40px;
+
+      transform:
+        translateX(-50%);
+
+      z-index: 100;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transition:
+        opacity 0.5s ease;
+    }
+
+    .bottom-button.show {
+
+      opacity: 1;
+
+      pointer-events: auto;
+    }
+
+    .bottom-button button {
+
+      background: none;
+      border: none;
+
+      color:
+        var(--text);
+
+      font-family:
+        "Instrument Serif",
+        serif;
+
+      font-size: 24px;
+
+      cursor: pointer;
+    }
+
+   @media (max-width: 860px) {
+
+  html,
+  body {
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+  }
+
+  .layout {
+
+    width: 100%;
+    height: 100%;
+
+    padding:
+      24px 0 40px;
+
+    align-items:
+      center;
+
+    justify-content:
+      center;
+  }
+
+  .book {
+
+    width: 100%;
+
+    height: 100%;
+
+    flex-direction: column;
+
+    transform:
+      scale(1);
+
+    align-items: center;
+
+    justify-content: center;
+  }
+
+  /* ===================================== */
+  /* LANDSCAPE PAGES */
+  /* ===================================== */
+
+  .page {
+
+    width: 92vw;
+
+    height: 34vh;
+
+    max-height: 300px;
+  }
+
+  .page.left {
+
+    border-radius:
+      18px 18px 0 0;
+  }
+
+  .page.right {
+
+    border-radius:
+      0 0 18px 18px;
+  }
+
+  /* ===================================== */
+  /* FLIPPED SPIRAL */
+  /* ===================================== */
+
+  .spiral {
+
+    width: 92vw;
+
+    height: 8px;
+
+    flex-direction: row;
+
+    justify-content: space-evenly;
+
+    align-items: center;
+
+    margin:
+      -2px 0;
+
+    position: relative;
+
+    overflow: visible;
+
+    z-index: 30;
+  }
+
+  .spiral-line {
+
+    width: 100%;
+
+    height: 8px;
+
+    top: 50%;
+    left: 0;
+
+    transform:
+      translateY(-50%);
+
+    border-radius:
+      0px;
+  }
+
+  /* FLIPPED RINGS */
+
+  .ring {
+
+    width: 6px;
+    height: 20px;
+
+    border-radius:
+      999px;
+
+    flex-shrink: 0;
+
+    background:
+      #161616;
+
+    position: relative;
+
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,0.08),
+      0 2px 6px rgba(0,0,0,0.45);
+  }
+
+  .ring::before,
+  .ring::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 4px;
+    height: 4px;
+
+    background:
+      var(--bg);
+
+    border-radius: 50%;
+
+    left: 1px;
+    top: 1px;
+  }
+
+
+  /* ===================================== */
+  /* TYPO */
+  /* ===================================== */
+
+  .message-input {
+
+    width: 82%;
+
+    font-size: 22px;
+
+    line-height: 1.5;
+  }
+
+  .send-button {
+
+    bottom: 24px;
+
+    font-size: 20px;
+  }
+
+  /* ===================================== */
+  /* STICKY BUTTON */
+  /* ===================================== */
+
+  .bottom-button {
+
+    position: fixed;
+
+    left: 50%;
+    bottom: 22px;
+
+    transform:
+      translateX(-50%);
+
+    z-index: 999;
+
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+  }
+
+}
+  </style>
+
+</head>
+
+<body>
+
+  <div class="layout">
+
+    <div class="book">
+
+      <!-- LEFT -->
+
+      <div class="page left">
+
+        <div
+          class="upload-wrap"
+          id="uploadWrap"
+        >
+
+          <label
+            for="imageUpload"
+            class="upload-label"
+          >
+            choose file
+          </label>
+
+        </div>
+
+        <input
+          type="file"
+          id="imageUpload"
+          accept="image/*"
+        >
+
+        <img
+          class="image-preview"
+          id="imagePreview"
+        >
+
+      </div>
+
+      <!-- SPIRAL -->
+
+      <div class="spiral">
+
+        <div class="spiral-line"></div>
+
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+         <div class="ring"></div>
+         <div class="ring"></div>
+ <div class="ring"></div>
+ <div class="ring"></div>
+
+      </div>
+
+      <!-- RIGHT -->
+
+      <div class="page right">
+
+        <div
+          class="message-wrap"
+          id="messageWrap"
+        >
+
+          <textarea
+            class="message-input"
+            id="messageInput"
+            placeholder="write something"
+          ></textarea>
+
+          <button
+            class="send-button"
+            id="sendButton"
+          >
+            send
+          </button>
+
+        </div>
+
+        <div
+          class="loading-text"
+          id="loadingText"
+        ></div>
+
+        <canvas id="canvas"></canvas>
+
+      </div>
+
+    </div>
+
+    <!-- BUTTON -->
+
+    <div
+      class="bottom-button"
+      id="bottomButton"
+    >
+
+      <button id="resetButton">
+        add page
+      </button>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const imageUpload =
+      document.getElementById(
+        "imageUpload"
+      );
+
+    const imagePreview =
+      document.getElementById(
+        "imagePreview"
+      );
+
+    const uploadWrap =
+      document.getElementById(
+        "uploadWrap"
+      );
+
+    const messageInput =
+      document.getElementById(
+        "messageInput"
+      );
+
+    const sendButton =
+      document.getElementById(
+        "sendButton"
+      );
+
+    const messageWrap =
+      document.getElementById(
+        "messageWrap"
+      );
+
+    const canvas =
+      document.getElementById(
+        "canvas"
+      );
+
+    const ctx =
+      canvas.getContext("2d");
+
+    const loadingText =
+      document.getElementById(
+        "loadingText"
+      );
+
+    const bottomButton =
+      document.getElementById(
+        "bottomButton"
+      );
+
+    const resetButton =
+      document.getElementById(
+        "resetButton"
+      );
+
+    let uploadedImage =
+      null;
+
+    /* ===================================== */
+    /* IMAGE UPLOAD */
+    /* ===================================== */
+
+    imageUpload.addEventListener(
+      "change",
+      (e) => {
+
+        const file =
+          e.target.files[0];
+
+        if (!file) return;
+
+        const reader =
+          new FileReader();
+
+        reader.onload =
+          function(event) {
+
+          uploadedImage =
+            new Image();
+
+          uploadedImage.onload =
+            () => {
+
+            imagePreview.src =
+              uploadedImage.src;
+
+            imagePreview.style.display =
+              "block";
+
+            uploadWrap.style.display =
+              "none";
+          };
+
+          uploadedImage.src =
+            event.target.result;
+        };
+
+        reader.readAsDataURL(file);
+      }
+    );
+
+    /* ===================================== */
+    /* LOADING */
+    /* ===================================== */
+
+    async function typingAnimation() {
+
+      const text =
+        "mundane things...";
+
+      loadingText.style.opacity =
+        "1";
+
+      for (
+        let round = 0;
+        round < 2;
+        round++
+      ) {
+
+        loadingText.innerHTML =
+          "";
+
+        for (
+          let i = 0;
+          i < text.length;
+          i++
+        ) {
+
+          loadingText.innerHTML +=
+            text[i];
+
+          await new Promise(
+            resolve =>
+              setTimeout(
+                resolve,
+                70
+              )
+          );
+        }
+
+        await new Promise(
+          resolve =>
+            setTimeout(
+              resolve,
+              550
+            )
+        );
+      }
+    }
+
+    /* ===================================== */
+    /* SEND */
+    /* ===================================== */
+
+    sendButton.addEventListener(
+      "click",
+      async () => {
+
+        if (!uploadedImage) {
+
+          alert(
+            "Please upload an image."
+          );
+
+          return;
+        }
+
+        const text =
+          messageInput.value.trim();
+
+        if (!text) {
+
+          alert(
+            "Please write a message."
+          );
+
+          return;
+        }
+
+        sendButton.style.display =
+          "none";
+
+        messageInput.style.opacity =
+          "0";
+
+        await typingAnimation();
+
+        loadingText.style.display =
+          "none";
+
+        generateVisualPoetry(
+          uploadedImage,
+          text
+        );
+      }
+    );
+
+    /* ===================================== */
+    /* VISUAL POETRY */
+    /* ===================================== */
+
+    function generateVisualPoetry(
+      img,
+      text
+    ) {
+
+      messageWrap.style.display =
+        "none";
+
+      canvas.style.display =
+        "block";
+
+      /* MATCH PAGE SIZE */
+
+      const rect =
+        canvas.getBoundingClientRect();
+
+      const w =
+        rect.width * 2;
+
+      const h =
+        rect.height * 2;
+
+      canvas.width = w;
+
+      canvas.height = h;
+
+      /* KEEP SAME CROPPING */
+
+      const imgRatio =
+        img.width / img.height;
+
+      const canvasRatio =
+        w / h;
+
+      let drawWidth,
+          drawHeight,
+          offsetX,
+          offsetY;
+
+      if (
+        imgRatio > canvasRatio
+      ) {
+
+        drawHeight = h;
+
+        drawWidth =
+          h * imgRatio;
+
+        offsetX =
+          (w - drawWidth) / 2;
+
+        offsetY = 0;
+
+      } else {
+
+        drawWidth = w;
+
+        drawHeight =
+          w / imgRatio;
+
+        offsetX = 0;
+
+        offsetY =
+          (h - drawHeight) / 2;
+      }
+
+      ctx.drawImage(
+        img,
+        offsetX,
+        offsetY,
+        drawWidth,
+        drawHeight
+      );
+
+      const imageData =
+        ctx.getImageData(
+          0,
+          0,
+          w,
+          h
+        );
+
+      const pixels =
+        imageData.data;
+
+      ctx.clearRect(
+        0,
+        0,
+        w,
+        h
+      );
+
+      ctx.fillStyle =
+        "#000";
+
+      ctx.fillRect(
+        0,
+        0,
+        w,
+        h
+      );
+
+      ctx.font =
+        "400 11px 'IBM Plex Mono'";
+
+      ctx.textBaseline =
+        "top";
+
+      let textIndex = 0;
+let gapY = 18;
+
+let gapX = 7;
+
+/* MOBILE */
+
+if (
+  window.innerWidth < 860
+) {
+
+  gapY = 12;
+
+  gapX = 6;
+
+  ctx.font =
+    "400 11px 'IBM Plex Mono'";
+}
+
+      for (
+        let y = 0;
+        y < h;
+        y += gapY
+      ) {
+
+        for (
+          let x = 0;
+          x < w;
+          x += gapX
+        ) {
+
+          const index =
+            (y * w + x) * 4;
+
+          const r =
+            pixels[index];
+
+          const g =
+            pixels[index + 1];
+
+          const b =
+            pixels[index + 2];
+
+          const brightness =
+            (r * 0.299) +
+            (g * 0.587) +
+            (b * 0.114);
+
+          let opacity =
+            1 - (
+              brightness / 255
+            );
+
+          opacity =
+            Math.pow(
+              opacity,
+              0.9
+            );
+
+          const char =
+            text[
+              textIndex %
+              text.length
+            ];
+
+          textIndex++;
+
+          ctx.fillStyle =
+            `rgba(255,255,255,${opacity})`;
+
+          ctx.fillText(
+            char,
+            x,
+            y
+          );
+        }
+      }
+
+      requestAnimationFrame(() => {
+
+        canvas.classList.add(
+          "show"
+        );
+
+      });
+
+      setTimeout(() => {
+
+        bottomButton.classList.add(
+          "show"
+        );
+
+      }, 6800);
+
+    }
+
+    /* ===================================== */
+    /* RESET */
+    /* ===================================== */
+
+    resetButton.addEventListener(
+      "click",
+      () => {
+
+        canvas.classList.remove(
+          "show"
+        );
+
+        canvas.style.display =
+          "none";
+
+        loadingText.innerHTML =
+          "";
+
+        loadingText.style.display =
+          "block";
+
+        loadingText.style.opacity =
+          "0";
+
+        messageWrap.style.display =
+          "flex";
+
+        messageInput.style.opacity =
+          "1";
+
+        messageInput.value =
+          "";
+
+        sendButton.style.display =
+          "block";
+
+        uploadedImage = null;
+
+        imagePreview.src = "";
+
+        imagePreview.style.display =
+          "none";
+
+        uploadWrap.style.display =
+          "flex";
+
+        imageUpload.value =
+          "";
+
+        bottomButton.classList.remove(
+          "show"
+        );
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
