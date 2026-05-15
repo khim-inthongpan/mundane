@@ -198,6 +198,35 @@
 
   /* smooth mobile scroll */
   -webkit-overflow-scrolling: touch;
+  
+}
+
+@media (max-width: 860px) {
+
+  .message-wrap {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .message-input {
+
+    width: 64%;
+    height: 100%;
+
+    padding: 0 !important;
+    margin: 0;
+
+    display: block;
+
+    font-size: 22px;
+    line-height: 34vh;
+
+    text-align: center;
+
+    overflow-y: auto;
+
+  }
+
 }
 
 .message-input::placeholder {
@@ -737,8 +766,8 @@
        * just sharper when saved.
        */
       const fontSize = Math.round(11 * RENDER_SCALE);
-      const gapY     = Math.round((isMobile ? 14 : 18) * RENDER_SCALE);
-      const gapX     = Math.round((isMobile ? 6  : 7)  * RENDER_SCALE);
+      const gapY = Math.round((isMobile ? 9 : 11) * RENDER_SCALE);
+      const gapX = Math.round((isMobile ? 5 : 6) * RENDER_SCALE);
 
       /* Collect draw calls */
 
@@ -770,6 +799,7 @@
           ctx.font  = `${curWeight} ${fontSize}px 'IBM Plex Mono'`;
         }
         ctx.fillStyle = `rgba(255,255,255,${c.opacity})`;
+        ctx.letterSpacing = `${Math.round(0.6 * RENDER_SCALE)}px`;
         ctx.fillText(c.char, c.x, c.y);
       }
 
