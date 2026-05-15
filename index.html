@@ -187,7 +187,7 @@
   color: rgba(255,255,255,0.92);
   caret-color: white;
 
-  overflow-y: auto;
+  overflow-y: hidden;
 
   display: flex;
   align-items: center;
@@ -637,10 +637,23 @@ function updateMobileTextarea() {
   }
 
 }
-
 messageInput.addEventListener("input", () => {
 
-  messageInput.scrollTop = messageInput.scrollHeight;
+  if (
+    messageInput.scrollHeight >
+    messageInput.clientHeight
+  ) {
+
+    messageInput.style.overflowY = "auto";
+    messageInput.scrollTop = messageInput.scrollHeight;
+
+  } else {
+
+    messageInput.style.overflowY = "hidden";
+
+  }
+
+});
 
 });
 
