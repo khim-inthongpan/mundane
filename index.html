@@ -211,18 +211,28 @@
   .message-input {
 
     width: 78%;
-    height: 100%;
+    height: 70%;
 
     padding: 0 !important;
     margin: 0;
 
+    background: none;
+    border: none;
+    outline: none;
+    resize: none;
+
     font-size: 22px;
+    line-height: 1.6;
 
     text-align: center;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     overflow-y: auto;
 
-    line-height: 34vh;
+    caret-color: white;
 
   }
 
@@ -629,8 +639,6 @@ function updateMobileTextarea() {
 }
 
 messageInput.addEventListener("input", () => {
-
-  updateMobileTextarea();
 
   messageInput.scrollTop = messageInput.scrollHeight;
 
