@@ -614,37 +614,26 @@
 
     let uploadedImage = null;
 
-function setMobileTypingMode() {
+function updateInputState() {
 
-  if (window.innerWidth < 860) {
-    messageInput.style.lineHeight = "1.6";
-  }
+  if (window.innerWidth >= 860) return;
 
-}
+  const empty = messageInput.value.trim() === "";
 
-function resetMobilePlaceholderMode() {
-
-  if (
-    window.innerWidth < 860 &&
-    messageInput.value.trim() === ""
-  ) {
-    messageInput.style.lineHeight = "34vh";
-  }
+  // only affects placeholder state, NOT text position
+  messageInput.classList.toggle("is-empty", empty);
 
 }
-
-messageInput.addEventListener("focus", setMobileTypingMode);
 
 messageInput.addEventListener("input", () => {
 
-  setMobileTypingMode();
+  updateInputState();
 
   messageInput.scrollTop = messageInput.scrollHeight;
 
 });
 
-messageInput.addEventListener("blur", resetMobilePlaceholderMode);
-
+updateInputState();
     /* ===================================== */
     /* IMAGE UPLOAD                          */
     /* ===================================== */
