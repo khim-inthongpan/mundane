@@ -614,11 +614,36 @@
 
     let uploadedImage = null;
 
-    messageInput.addEventListener("input", () => {
+function setMobileTypingMode() {
+
+  if (window.innerWidth < 860) {
+    messageInput.style.lineHeight = "1.6";
+  }
+
+}
+
+function resetMobilePlaceholderMode() {
+
+  if (
+    window.innerWidth < 860 &&
+    messageInput.value.trim() === ""
+  ) {
+    messageInput.style.lineHeight = "34vh";
+  }
+
+}
+
+messageInput.addEventListener("focus", setMobileTypingMode);
+
+messageInput.addEventListener("input", () => {
+
+  setMobileTypingMode();
 
   messageInput.scrollTop = messageInput.scrollHeight;
 
 });
+
+messageInput.addEventListener("blur", resetMobilePlaceholderMode);
 
     /* ===================================== */
     /* IMAGE UPLOAD                          */
