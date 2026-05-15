@@ -10,669 +10,467 @@
   />
 
   <title>Mundane Mono</title>
-  <link
-  rel="icon"
-  type="image/png"
-  href="favicon.png"
-/>
+
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  >
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <!-- WEBSITE FONT -->
-
   <link
     href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap"
     rel="stylesheet"
   >
 
-  <!-- VISUAL POETRY FONT -->
-
+  <!-- VISUAL POETRY — IBM Plex Mono all weights (variable-like via multi-weight) -->
   <link
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
     rel="stylesheet"
   >
 
   <style>
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     :root {
-
-      --bg:
-        #111111;
-
-      --text:
-        #f2f2f2;
-
-      --spiral:
-        #141414;
+      --bg:     #111111;
+      --text:   #f2f2f2;
+      --spiral: #141414;
     }
 
     body {
-
       margin: 0;
-
       width: 100vw;
       height: 100vh;
-
       overflow: hidden;
-
-      background:
-        var(--bg);
-
-      color:
-        var(--text);
-
-      font-family:
-        "Instrument Serif",
-        serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Instrument Serif", serif;
     }
 
     /* ===================================== */
-    /* LAYOUT */
+    /* LAYOUT                                */
     /* ===================================== */
 
     .layout {
-
       width: 100%;
       height: 100%;
-
-      padding:
-        24px 0 40px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
       position: relative;
+      overflow: hidden;
     }
 
     /* ===================================== */
-    /* BOOK */
+    /* BOOK-WRAP — always true-centered      */
+    /* ===================================== */
+
+    .book-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      transform-origin: center center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ===================================== */
+    /* BOOK                                  */
     /* ===================================== */
 
     .book {
-
       display: flex;
-
       align-items: center;
       justify-content: center;
-
-      position: relative;
-
-      transform:
-        scale(0.9);
     }
 
     .page {
-
       width: 470px;
       height: 680px;
-
       overflow: hidden;
-
       position: relative;
     }
 
     .page.left {
-
-      background:
-        #efefef;
-
-      border-radius:
-        14px 0 0 14px;
+      background: #efefef;
+      border-radius: 14px 0 0 14px;
     }
 
     .page.right {
-
-      background:
-        #000;
-
-      border-radius:
-        0 14px 14px 0;
-
+      background: #000;
+      border-radius: 0 14px 14px 0;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     /* ===================================== */
-    /* IMAGE */
+    /* IMAGE                                 */
     /* ===================================== */
 
     .image-preview {
-
       width: 100%;
       height: 100%;
-
       object-fit: cover;
-
       display: none;
-
-      filter:
-        saturate(2.1)
-        contrast(1.18)
-        brightness(1.03);
+      filter: saturate(2.1) contrast(1.18) brightness(1.03);
     }
 
     /* GRAIN */
-
     .page.left::after {
-
       content: "";
-
       position: absolute;
-
       inset: 0;
-
       pointer-events: none;
-
       opacity: 0.28;
-
       mix-blend-mode: overlay;
-
-      background-image:
-        radial-gradient(
-          rgba(0,0,0,0.45) 1px,
-          transparent 1px
-        );
-
-      background-size:
-        4px 4px;
+      background-image: radial-gradient(rgba(0,0,0,0.45) 1px, transparent 1px);
+      background-size: 4px 4px;
     }
 
     /* ===================================== */
-    /* UPLOAD */
+    /* UPLOAD                                */
     /* ===================================== */
 
     .upload-wrap {
-
       position: absolute;
-
       inset: 0;
-
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .upload-label {
-
       cursor: pointer;
-
       font-size: 24px;
-
-      color:
-        #222;
+      color: #222;
     }
 
-    input[type="file"] {
-
-      display: none;
-    }
+    input[type="file"] { display: none; }
 
     /* ===================================== */
-    /* MESSAGE */
+    /* MESSAGE                               */
     /* ===================================== */
 
-    .message-wrap {
+.message-wrap {
+  width: 100%;
+  height: 100%;
 
-      width: 100%;
-      height: 100%;
+  position: relative;
 
-      display: flex;
-      flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-      align-items: center;
-      justify-content: center;
+  overflow: hidden;
+}
 
-      position: relative;
-    }
+.message-input {
+  width: 72%;
+  height: 62%;
 
-    .message-input {
+  background: none;
+  border: none;
+  outline: none;
+  resize: none;
 
-      width: 72%;
+  padding: 0;
+  padding-top: calc(50% - 1.8em);
+  margin: 0;
 
-      background: none;
-      border: none;
-      outline: none;
+  text-align: center;
 
-      resize: none;
+  font-family: "Instrument Serif", serif;
+  font-size: 26px;
+  line-height: 1.6;
 
-      text-align: center;
+  color: rgba(255,255,255,0.92);
+  caret-color: white;
 
-      font-family:
-        "Instrument Serif",
-        serif;
+  overflow-y: auto;
 
-      font-size: 26px;
+  display: flex;
+  align-items: center;
 
-      line-height: 1.6;
+  /* removes browser weirdness */
+  appearance: none;
+  -webkit-appearance: none;
 
-      color:
-        rgba(255,255,255,0.92);
+  /* smooth mobile scroll */
+  -webkit-overflow-scrolling: touch;
+}
 
-      caret-color:
-        white;
-    }
-
-    .message-input::placeholder {
-
-      color:
-        rgba(255,255,255,0.2);
-    }
+.message-input::placeholder {
+  color: rgba(255,255,255,0.2);
+}
 
     /* ===================================== */
-    /* SEND */
+    /* SEND                                  */
     /* ===================================== */
 
     .send-button {
-
       position: absolute;
-
       bottom: 34px;
       left: 50%;
-
-      transform:
-        translateX(-50%);
-
+      transform: translateX(-50%);
       background: none;
       border: none;
-
-      color:
-        rgba(255,255,255,0.9);
-
-      font-family:
-        "Instrument Serif",
-        serif;
-
+      color: rgba(255,255,255,0.9);
+      font-family: "Instrument Serif", serif;
       font-size: 22px;
-
       cursor: pointer;
     }
 
     /* ===================================== */
-    /* LOADING */
+    /* LOADING                               */
     /* ===================================== */
 
     .loading-text {
-
       position: absolute;
-
-      color:
-        rgba(255,255,255,0.8);
-
-      font-family:
-        "IBM Plex Mono",
-        monospace;
-
+      color: rgba(255,255,255,0.8);
+      font-family: "IBM Plex Mono", monospace;
       font-size: 14px;
-
       opacity: 0;
     }
 
     /* ===================================== */
-    /* CANVAS */
+    /* CANVAS                                */
     /* ===================================== */
 
     canvas {
-
       width: 100%;
       height: 100%;
-
       display: none;
-
       opacity: 0;
-
-      clip-path:
-        inset(0 0 100% 0);
-
+      clip-path: inset(0 0 100% 0);
       transition:
         clip-path 16s cubic-bezier(0.22, 1, 0.36, 1),
         opacity 16s ease;
     }
 
     canvas.show {
-
       opacity: 1;
-
-      clip-path:
-        inset(0 0 0% 0);
+      clip-path: inset(0 0 0% 0);
     }
 
     /* ===================================== */
-    /* SPIRAL */
+    /* SPIRAL                                */
     /* ===================================== */
 
     .spiral {
-
       width: 24px;
-
       height: 680px;
-
       position: relative;
-
       display: flex;
       flex-direction: column;
       justify-content: space-evenly;
       align-items: center;
-
-      margin:
-        0 -1px;
-
+      margin: 0 -1px;
       z-index: 10;
     }
 
     .spiral-line {
-
       position: absolute;
-
       width: 6px;
-
       height: 100%;
-
-      background:
-        #111;
-
+      background: #111;
       left: 50%;
-
-      transform:
-        translateX(-50%);
-
+      transform: translateX(-50%);
       border-radius: 999px;
     }
 
     .ring {
-
       width: 46px;
       height: 10px;
-
       border-radius: 999px;
-
-      background:
-        var(--spiral);
-
+      background: var(--spiral);
       position: relative;
     }
 
     .ring::before,
     .ring::after {
-
       content: "";
-
       position: absolute;
-
       width: 8px;
       height: 8px;
-
-      background:
-        var(--bg);
-
+      background: var(--bg);
       border-radius: 50%;
-
       top: 1px;
     }
 
-    .ring::before {
-
-      left: 6px;
-    }
-
-    .ring::after {
-
-      right: 6px;
-    }
+    .ring::before { left: 6px; }
+    .ring::after  { right: 6px; }
 
     /* ===================================== */
-    /* ADD PAGE BUTTON */
+    /* SAVE ROW — under the book             */
     /* ===================================== */
 
-    .bottom-button {
-
-      position: fixed;
-
-      left: 50%;
-      bottom: 40px;
-
-      transform:
-        translateX(-50%);
-
-      z-index: 100;
-
+    .save-row {
+      width: 964px;   /* 470 + 24 + 470 — matches book */
+      display: flex;
+      align-items: center;
+      padding-top: 22px;
       opacity: 0;
-
       pointer-events: none;
-
-      transition:
-        opacity 0.5s ease;
+      transition: opacity 0.5s ease;
     }
 
-    .bottom-button.show {
-
+    .save-row.show {
       opacity: 1;
-
       pointer-events: auto;
     }
 
-    .bottom-button button {
-
-      background: none;
-      border: none;
-
-      color:
-        var(--text);
-
-      font-family:
-        "Instrument Serif",
-        serif;
-
-      font-size: 24px;
-
-      cursor: pointer;
+    .save-left {
+      width: 470px;
+      display: flex;
+      justify-content: center;
     }
 
-   @media (max-width: 860px) {
+    .save-spiral-gap {
+      width: 24px;
+      flex-shrink: 0;
+    }
+
+    .save-right {
+      width: 470px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .save-btn {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-family: "Instrument Serif", serif;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    /* ===================================== */
+    /* STICKY BAR — new page only            */
+    /* ===================================== */
+
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 24px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(100%);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .bottom-bar.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .bar-btn {
+      background: none;
+      border: none;
+      color: #111111;
+      font-family: "Instrument Serif", serif;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+    }
+
+    /* ===================================== */
+    /* MOBILE                                */
+    /* ===================================== */
+
+    @media (max-width: 860px) {
+
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .book-wrap {
+        /* on mobile: still centered, but scale 1 */
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      .book {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .page {
+        width: 92vw;
+        height: 34vh;
+        max-height: 300px;
+      }
+
+      .page.left  { border-radius: 18px 18px 0 0; }
+      .page.right { border-radius: 0 0 18px 18px; }
+
+      /* FLIPPED SPIRAL */
+
+      .spiral {
+        width: 92vw;
+        height: 8px;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        margin: -2px 0;
+        overflow: visible;
+        z-index: 30;
+      }
+
+      .spiral-line {
+        width: 100%;
+        height: 8px;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        border-radius: 0;
+      }
+
+      .ring {
+        width: 6px;
+        height: 20px;
+        flex-shrink: 0;
+        background: #161616;
+        box-shadow:
+          inset 0 1px 1px rgba(255,255,255,0.08),
+          0 2px 6px rgba(0,0,0,0.45);
+      }
+
+      .ring::before,
+      .ring::after {
+        width: 4px;
+        height: 4px;
+        left: 1px;
+        top: 1px;
+        right: unset;
+      }
+
+      /* MOBILE BAR */
+
+      .bottom-bar { padding: 14px 20px; }
+      .bar-btn    { font-size: 18px; }
+
+      .save-btn         { font-size: 18px; }
+      .save-row         { width: 92vw; padding-top: 20px; }
+      .save-left        { width: auto; flex: 1; }
+      .save-spiral-gap  { flex: 1; }
+      .save-right       { width: auto; flex: 1; }
+
+    }
 
-  html,
-  body {
-
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-  }
-
-  .layout {
-
-    width: 100%;
-    height: 100%;
-
-    padding:
-      24px 0 40px;
-
-    align-items:
-      center;
-
-    justify-content:
-      center;
-  }
-
-  .book {
-
-    width: 100%;
-
-    height: 100%;
-
-    flex-direction: column;
-
-    transform:
-      scale(1);
-
-    align-items: center;
-
-    justify-content: center;
-  }
-
-  /* ===================================== */
-  /* LANDSCAPE PAGES */
-  /* ===================================== */
-
-  .page {
-
-    width: 92vw;
-
-    height: 34vh;
-
-    max-height: 300px;
-  }
-
-  .page.left {
-
-    border-radius:
-      18px 18px 0 0;
-  }
-
-  .page.right {
-
-    border-radius:
-      0 0 18px 18px;
-  }
-
-  /* ===================================== */
-  /* FLIPPED SPIRAL */
-  /* ===================================== */
-
-  .spiral {
-
-    width: 92vw;
-
-    height: 8px;
-
-    flex-direction: row;
-
-    justify-content: space-evenly;
-
-    align-items: center;
-
-    margin:
-      -2px 0;
-
-    position: relative;
-
-    overflow: visible;
-
-    z-index: 30;
-  }
-
-  .spiral-line {
-
-    width: 100%;
-
-    height: 8px;
-
-    top: 50%;
-    left: 0;
-
-    transform:
-      translateY(-50%);
-
-    border-radius:
-      0px;
-  }
-
-  /* FLIPPED RINGS */
-
-  .ring {
-
-    width: 6px;
-    height: 20px;
-
-    border-radius:
-      999px;
-
-    flex-shrink: 0;
-
-    background:
-      #161616;
-
-    position: relative;
-
-    box-shadow:
-      inset 0 1px 1px rgba(255,255,255,0.08),
-      0 2px 6px rgba(0,0,0,0.45);
-  }
-
-  .ring::before,
-  .ring::after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 4px;
-    height: 4px;
-
-    background:
-      var(--bg);
-
-    border-radius: 50%;
-
-    left: 1px;
-    top: 1px;
-  }
-
-
-  /* ===================================== */
-  /* TYPO */
-  /* ===================================== */
-
-  .message-input {
-
-    width: 82%;
-
-    font-size: 22px;
-
-    line-height: 1.5;
-  }
-
-  .send-button {
-
-    bottom: 24px;
-
-    font-size: 20px;
-  }
-
-  /* ===================================== */
-  /* STICKY BUTTON */
-  /* ===================================== */
-
-  .bottom-button {
-
-    position: fixed;
-
-    left: 50%;
-    bottom: 22px;
-
-    transform:
-      translateX(-50%);
-
-    z-index: 999;
-
-    width: 100%;
-
-    display: flex;
-    justify-content: center;
-  }
-
-}
   </style>
 
 </head>
@@ -681,579 +479,548 @@
 
   <div class="layout">
 
-    <div class="book">
+    <div class="book-wrap">
 
-      <!-- LEFT -->
+      <!-- BOOK -->
+      <div class="book" id="bookEl">
 
-      <div class="page left">
+        <!-- LEFT PAGE -->
+        <div class="page left" id="pageLeft">
 
-        <div
-          class="upload-wrap"
-          id="uploadWrap"
-        >
+          <div class="upload-wrap" id="uploadWrap">
+            <label for="imageUpload" class="upload-label">choose file</label>
+          </div>
 
-          <label
-            for="imageUpload"
-            class="upload-label"
-          >
-            choose file
-          </label>
+          <input type="file" id="imageUpload" accept="image/*">
+
+          <img class="image-preview" id="imagePreview">
 
         </div>
 
-        <input
-          type="file"
-          id="imageUpload"
-          accept="image/*"
-        >
+        <!-- SPIRAL -->
+        <div class="spiral" id="spiralEl">
+          <div class="spiral-line"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+        </div>
 
-        <img
-          class="image-preview"
-          id="imagePreview"
-        >
+        <!-- RIGHT PAGE -->
+        <div class="page right" id="pageRight">
 
-      </div>
+          <div class="message-wrap" id="messageWrap">
+            <textarea
+              class="message-input"
+              id="messageInput"
+              placeholder="write something"
+            ></textarea>
+            <button class="send-button" id="sendButton">send</button>
+          </div>
 
-      <!-- SPIRAL -->
+          <div class="loading-text" id="loadingText"></div>
 
-      <div class="spiral">
-
-        <div class="spiral-line"></div>
-
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-
-      </div>
-
-      <!-- RIGHT -->
-
-      <div class="page right">
-
-        <div
-          class="message-wrap"
-          id="messageWrap"
-        >
-
-          <textarea
-            class="message-input"
-            id="messageInput"
-            placeholder="write something"
-          ></textarea>
-
-          <button
-            class="send-button"
-            id="sendButton"
-          >
-            send
-          </button>
+          <canvas id="canvas"></canvas>
 
         </div>
 
-        <div
-          class="loading-text"
-          id="loadingText"
-        ></div>
+      </div><!-- /book -->
 
-        <canvas id="canvas"></canvas>
-
+      <!-- SAVE BUTTONS — floating under book -->
+      <div class="save-row" id="saveRow">
+        <div class="save-left">
+          <button class="save-btn" id="saveBookButton">save book</button>
+        </div>
+        <div class="save-spiral-gap"></div>
+        <div class="save-right">
+          <button class="save-btn" id="saveMonoButton">save mono</button>
+        </div>
       </div>
 
-    </div>
+    </div><!-- /book-wrap -->
 
-    <!-- BUTTON -->
+  </div><!-- /layout -->
 
-    <div
-      class="bottom-button"
-      id="bottomButton"
-    >
-
-      <button id="resetButton">
-        add page
-      </button>
-
-    </div>
-
+  <!-- STICKY BOTTOM BAR — new page only -->
+  <div class="bottom-bar" id="bottomBar">
+    <button class="bar-btn" id="resetButton">new page</button>
   </div>
 
   <script>
 
-    const imageUpload =
-      document.getElementById(
-        "imageUpload"
-      );
-
-    const imagePreview =
-      document.getElementById(
-        "imagePreview"
-      );
-
-    const uploadWrap =
-      document.getElementById(
-        "uploadWrap"
-      );
-
-    const messageInput =
-      document.getElementById(
-        "messageInput"
-      );
-
-    const sendButton =
-      document.getElementById(
-        "sendButton"
-      );
-
-    const messageWrap =
-      document.getElementById(
-        "messageWrap"
-      );
-
-    const canvas =
-      document.getElementById(
-        "canvas"
-      );
-
-    const ctx =
-      canvas.getContext("2d");
-
-    const loadingText =
-      document.getElementById(
-        "loadingText"
-      );
-
-    const bottomButton =
-      document.getElementById(
-        "bottomButton"
-      );
-
-    const resetButton =
-      document.getElementById(
-        "resetButton"
-      );
-
-    let uploadedImage =
-      null;
-
     /* ===================================== */
-    /* IMAGE UPLOAD */
+    /* REFS                                  */
     /* ===================================== */
 
-    imageUpload.addEventListener(
-      "change",
-      (e) => {
+    const imageUpload    = document.getElementById("imageUpload");
+    const imagePreview   = document.getElementById("imagePreview");
+    const uploadWrap     = document.getElementById("uploadWrap");
+    const messageInput   = document.getElementById("messageInput");
+    const sendButton     = document.getElementById("sendButton");
+    const messageWrap    = document.getElementById("messageWrap");
+    const canvas         = document.getElementById("canvas");
+    const ctx            = canvas.getContext("2d");
+    const loadingText    = document.getElementById("loadingText");
+    const pageLeft       = document.getElementById("pageLeft");
+    const pageRight      = document.getElementById("pageRight");
+    const spiralEl       = document.getElementById("spiralEl");
+    const saveMonoButton = document.getElementById("saveMonoButton");
+    const saveBookButton = document.getElementById("saveBookButton");
+    const resetButton    = document.getElementById("resetButton");
+    const bottomBar      = document.getElementById("bottomBar");
+    const saveRow        = document.getElementById("saveRow");
 
-        const file =
-          e.target.files[0];
+    let uploadedImage = null;
 
-        if (!file) return;
+    messageInput.addEventListener("input", () => {
 
-        const reader =
-          new FileReader();
+  messageInput.scrollTop = messageInput.scrollHeight;
 
-        reader.onload =
-          function(event) {
+});
 
-          uploadedImage =
-            new Image();
+    /* ===================================== */
+    /* IMAGE UPLOAD                          */
+    /* ===================================== */
 
-          uploadedImage.onload =
-            () => {
+    imageUpload.addEventListener("change", (e) => {
 
-            imagePreview.src =
-              uploadedImage.src;
+      const file = e.target.files[0];
+      if (!file) return;
 
-            imagePreview.style.display =
-              "block";
+      const reader = new FileReader();
 
-            uploadWrap.style.display =
-              "none";
-          };
-
-          uploadedImage.src =
-            event.target.result;
+      reader.onload = (event) => {
+        uploadedImage = new Image();
+        uploadedImage.onload = () => {
+          imagePreview.src           = uploadedImage.src;
+          imagePreview.style.display = "block";
+          uploadWrap.style.display   = "none";
         };
+        uploadedImage.src = event.target.result;
+      };
 
-        reader.readAsDataURL(file);
-      }
-    );
+      reader.readAsDataURL(file);
+    });
 
     /* ===================================== */
-    /* LOADING */
+    /* LOADING ANIMATION                     */
     /* ===================================== */
 
     async function typingAnimation() {
 
-      const text =
-        "mundane things...";
+      const text = "mundane things...";
+      loadingText.style.opacity = "1";
 
-      loadingText.style.opacity =
-        "1";
-
-      for (
-        let round = 0;
-        round < 2;
-        round++
-      ) {
-
-        loadingText.innerHTML =
-          "";
-
-        for (
-          let i = 0;
-          i < text.length;
-          i++
-        ) {
-
-          loadingText.innerHTML +=
-            text[i];
-
-          await new Promise(
-            resolve =>
-              setTimeout(
-                resolve,
-                70
-              )
-          );
+      for (let round = 0; round < 2; round++) {
+        loadingText.innerHTML = "";
+        for (let i = 0; i < text.length; i++) {
+          loadingText.innerHTML += text[i];
+          await new Promise(r => setTimeout(r, 70));
         }
-
-        await new Promise(
-          resolve =>
-            setTimeout(
-              resolve,
-              550
-            )
-        );
+        await new Promise(r => setTimeout(r, 550));
       }
     }
 
     /* ===================================== */
-    /* SEND */
+    /* SEND                                  */
     /* ===================================== */
 
-    sendButton.addEventListener(
-      "click",
-      async () => {
+    sendButton.addEventListener("click", async () => {
 
-        if (!uploadedImage) {
+      if (!uploadedImage) { alert("Please upload an image."); return; }
 
-          alert(
-            "Please upload an image."
-          );
+      const text = messageInput.value.trim();
+      if (!text) { alert("Please write a message."); return; }
 
-          return;
-        }
+      sendButton.style.display   = "none";
+      messageInput.style.opacity = "0";
 
-        const text =
-          messageInput.value.trim();
+      await typingAnimation();
 
-        if (!text) {
+      loadingText.style.display = "none";
 
-          alert(
-            "Please write a message."
-          );
-
-          return;
-        }
-
-        sendButton.style.display =
-          "none";
-
-        messageInput.style.opacity =
-          "0";
-
-        await typingAnimation();
-
-        loadingText.style.display =
-          "none";
-
-        generateVisualPoetry(
-          uploadedImage,
-          text
-        );
-      }
-    );
+      generateVisualPoetry(uploadedImage, text);
+    });
 
     /* ===================================== */
-    /* VISUAL POETRY */
+    /* FONT WEIGHT FROM BRIGHTNESS           */
     /* ===================================== */
 
-    function generateVisualPoetry(
-      img,
-      text
-    ) {
+    /*
+     * IBM Plex Mono weights loaded: 100 · 200 · 300 · 400 · 500 · 600 · 700
+     *
+     * Mapping: dark pixels (b→0) get heavy strokes (700),
+     *          light pixels (b→255) get thin strokes (100).
+     * This creates the illusion of ink density and halftone depth.
+     */
 
-      messageWrap.style.display =
-        "none";
+    function weightFromBrightness(b) {
+      if (b <  36) return 700;
+      if (b <  73) return 600;
+      if (b < 110) return 500;
+      if (b < 148) return 400;
+      if (b < 185) return 300;
+      if (b < 220) return 200;
+      return 100;
+    }
 
-      canvas.style.display =
-        "block";
+    /* ===================================== */
+    /* GENERATE VISUAL POETRY                */
+    /* ===================================== */
 
-      /* MATCH PAGE SIZE */
+    function generateVisualPoetry(img, text) {
 
-      const rect =
-        canvas.getBoundingClientRect();
+      messageWrap.style.display = "none";
+      canvas.style.display      = "block";
 
-      const w =
-        rect.width * 2;
+      /*
+       * Read size from parent (.page.right) — always laid out.
+       * canvas is still display:none at this point; on real
+       * mobile getBoundingClientRect() would return 0×0.
+       */
 
-      const h =
-        rect.height * 2;
+      const pr  = pageRight.getBoundingClientRect();
 
-      canvas.width = w;
+      /*
+       * RENDER_SCALE: how many physical pixels per CSS pixel.
+       * Set to 3 for a high-res export regardless of device DPR.
+       * The canvas CSS size stays at 100%/100% (display only);
+       * only the internal pixel buffer is enlarged.
+       */
+      const RENDER_SCALE = 3;
 
+      const w = Math.round(pr.width  * RENDER_SCALE);
+      const h = Math.round(pr.height * RENDER_SCALE);
+
+      canvas.width  = w;
       canvas.height = h;
 
-      /* KEEP SAME CROPPING */
+      /* Cover-fit image */
 
-      const imgRatio =
-        img.width / img.height;
+      const ir = img.width / img.height;
+      const cr = w / h;
+      let dw, dh, ox, oy;
 
-      const canvasRatio =
-        w / h;
-
-      let drawWidth,
-          drawHeight,
-          offsetX,
-          offsetY;
-
-      if (
-        imgRatio > canvasRatio
-      ) {
-
-        drawHeight = h;
-
-        drawWidth =
-          h * imgRatio;
-
-        offsetX =
-          (w - drawWidth) / 2;
-
-        offsetY = 0;
-
+      if (ir > cr) {
+        dh = h; dw = h * ir; ox = (w - dw) / 2; oy = 0;
       } else {
-
-        drawWidth = w;
-
-        drawHeight =
-          w / imgRatio;
-
-        offsetX = 0;
-
-        offsetY =
-          (h - drawHeight) / 2;
+        dw = w; dh = w / ir; ox = 0; oy = (h - dh) / 2;
       }
 
-      ctx.drawImage(
-        img,
-        offsetX,
-        offsetY,
-        drawWidth,
-        drawHeight
-      );
+      ctx.drawImage(img, ox, oy, dw, dh);
 
-      const imageData =
-        ctx.getImageData(
-          0,
-          0,
-          w,
-          h
-        );
+      const pixels = ctx.getImageData(0, 0, w, h).data;
 
-      const pixels =
-        imageData.data;
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, w, h);
+      ctx.textBaseline = "top";
 
-      ctx.clearRect(
-        0,
-        0,
-        w,
-        h
-      );
+      const isMobile = window.innerWidth < 860;
 
-      ctx.fillStyle =
-        "#000";
+      /*
+       * Scale font size and grid gaps by RENDER_SCALE so the
+       * character density looks identical to the preview —
+       * just sharper when saved.
+       */
+      const fontSize = Math.round(11 * RENDER_SCALE);
+      const gapY     = Math.round((isMobile ? 14 : 18) * RENDER_SCALE);
+      const gapX     = Math.round((isMobile ? 6  : 7)  * RENDER_SCALE);
 
-      ctx.fillRect(
-        0,
-        0,
-        w,
-        h
-      );
+      /* Collect draw calls */
 
-      ctx.font =
-        "400 11px 'IBM Plex Mono'";
+      const calls = [];
+      let ti = 0;
 
-      ctx.textBaseline =
-        "top";
+      for (let y = 0; y < h; y += gapY) {
+        for (let x = 0; x < w; x += gapX) {
 
-      let textIndex = 0;
-let gapY = 18;
+          const i          = (y * w + x) * 4;
+          const brightness = pixels[i] * 0.299 + pixels[i+1] * 0.587 + pixels[i+2] * 0.114;
+          const opacity    = Math.pow(1 - brightness / 255, 0.9);
+          const weight     = weightFromBrightness(brightness);
+          const char       = text[ti % text.length];
+          ti++;
 
-let gapX = 7;
-
-/* MOBILE */
-
-if (
-  window.innerWidth < 860
-) {
-
-  gapY = 12;
-
-  gapX = 6;
-
-  ctx.font =
-    "400 11px 'IBM Plex Mono'";
-}
-
-      for (
-        let y = 0;
-        y < h;
-        y += gapY
-      ) {
-
-        for (
-          let x = 0;
-          x < w;
-          x += gapX
-        ) {
-
-          const index =
-            (y * w + x) * 4;
-
-          const r =
-            pixels[index];
-
-          const g =
-            pixels[index + 1];
-
-          const b =
-            pixels[index + 2];
-
-          const brightness =
-            (r * 0.299) +
-            (g * 0.587) +
-            (b * 0.114);
-
-          let opacity =
-            1 - (
-              brightness / 255
-            );
-
-          opacity =
-            Math.pow(
-              opacity,
-              0.9
-            );
-
-          const char =
-            text[
-              textIndex %
-              text.length
-            ];
-
-          textIndex++;
-
-          ctx.fillStyle =
-            `rgba(255,255,255,${opacity})`;
-
-          ctx.fillText(
-            char,
-            x,
-            y
-          );
+          calls.push({ x, y, char, opacity, weight });
         }
       }
 
-      requestAnimationFrame(() => {
+      /* Batch by weight to minimise ctx.font switches */
 
-        canvas.classList.add(
-          "show"
-        );
+      calls.sort((a, b) => a.weight - b.weight);
+      let curWeight = null;
 
-      });
+      for (const c of calls) {
+        if (c.weight !== curWeight) {
+          curWeight = c.weight;
+          ctx.font  = `${curWeight} ${fontSize}px 'IBM Plex Mono'`;
+        }
+        ctx.fillStyle = `rgba(255,255,255,${c.opacity})`;
+        ctx.fillText(c.char, c.x, c.y);
+      }
+
+      requestAnimationFrame(() => canvas.classList.add("show"));
 
       setTimeout(() => {
-
-        bottomButton.classList.add(
-          "show"
-        );
-
+        saveRow.classList.add("show");
+        bottomBar.classList.add("show");
       }, 6800);
-
     }
 
     /* ===================================== */
-    /* RESET */
+    /* SAVE MONO — only the right canvas     */
     /* ===================================== */
 
-    resetButton.addEventListener(
-      "click",
-      () => {
+    saveMonoButton.addEventListener("click", () => {
+      const a    = document.createElement("a");
+      a.download = "mundane-mono.png";
+      a.href     = canvas.toDataURL("image/png");
+      a.click();
+    });
 
-        canvas.classList.remove(
-          "show"
-        );
+    /* ===================================== */
+    /* SAVE BOOK — pages + spiral            */
+    /* ===================================== */
 
-        canvas.style.display =
-          "none";
+    saveBookButton.addEventListener("click", () => {
 
-        loadingText.innerHTML =
-          "";
+      const RENDER_SCALE = 3;
+      const isMobile     = window.innerWidth < 860;
 
-        loadingText.style.display =
-          "block";
+      const px = v => Math.round(v * RENDER_SCALE);
 
-        loadingText.style.opacity =
-          "0";
+      const lRect = pageLeft.getBoundingClientRect();
+      const rRect = pageRight.getBoundingClientRect();
+      const sRect = spiralEl.getBoundingClientRect();
 
-        messageWrap.style.display =
-          "flex";
+      /* Total canvas size */
 
-        messageInput.style.opacity =
-          "1";
+      const lw = px(lRect.width),  lh = px(lRect.height);
+      const sw = px(sRect.width),  sh = px(sRect.height);
+      const rw = px(rRect.width),  rh = px(rRect.height);
 
-        messageInput.value =
-          "";
+      let totalW, totalH;
 
-        sendButton.style.display =
-          "block";
-
-        uploadedImage = null;
-
-        imagePreview.src = "";
-
-        imagePreview.style.display =
-          "none";
-
-        uploadWrap.style.display =
-          "flex";
-
-        imageUpload.value =
-          "";
-
-        bottomButton.classList.remove(
-          "show"
-        );
-
+      if (isMobile) {
+        totalW = lw;
+        totalH = lh + sh + rh;
+      } else {
+        totalW = lw + sw + rw;
+        totalH = lh;
       }
-    );
+
+      const off = document.createElement("canvas");
+      off.width  = totalW;
+      off.height = totalH;
+      const oc   = off.getContext("2d");
+
+      /* ---- LEFT PAGE ---- */
+
+      oc.save();
+      oc.beginPath();
+
+      if (isMobile) {
+        oc.roundRect(0, 0, lw, lh, [px(18), px(18), 0, 0]);
+      } else {
+        oc.roundRect(0, 0, lw, lh, [px(14), 0, 0, px(14)]);
+      }
+
+      oc.clip();
+      oc.fillStyle = "#efefef";
+      oc.fillRect(0, 0, lw, lh);
+
+      if (uploadedImage) {
+
+        const ir = uploadedImage.width / uploadedImage.height;
+        const cr = lw / lh;
+        let dw, dh, ox, oy;
+
+        if (ir > cr) {
+          dh = lh; dw = lh * ir; ox = (lw - dw) / 2; oy = 0;
+        } else {
+          dw = lw; dh = lw / ir; ox = 0; oy = (lh - dh) / 2;
+        }
+
+        const tmp    = document.createElement("canvas");
+        tmp.width    = lw;
+        tmp.height   = lh;
+        const tc     = tmp.getContext("2d");
+        tc.filter    = "saturate(2.1) contrast(1.18) brightness(1.03)";
+        tc.drawImage(uploadedImage, ox, oy, dw, dh);
+        oc.drawImage(tmp, 0, 0);
+      }
+
+      oc.restore();
+
+      /* ---- SPIRAL ---- */
+
+      // Position of the spiral area on the offscreen canvas
+
+      const spiralX = isMobile ? 0    : lw;
+      const spiralY = isMobile ? lh   : 0;
+
+      // Dark background strip
+
+      oc.fillStyle = "#111111";
+      oc.fillRect(spiralX, spiralY, sw, sh);
+
+      // Centre line
+
+      oc.fillStyle = "#111111";
+      oc.beginPath();
+
+      if (isMobile) {
+        // horizontal spine
+        const lineH = px(8);
+        const lineY = spiralY + Math.round((sh - lineH) / 2);
+        oc.roundRect(spiralX, lineY, sw, lineH, px(3));
+      } else {
+        // vertical spine
+        const lineW = px(6);
+        const lineX = spiralX + Math.round((sw - lineW) / 2);
+        oc.roundRect(lineX, spiralY, lineW, sh, px(3));
+      }
+
+      oc.fill();
+
+      // Individual rings — read positions from live DOM
+
+      const rings = spiralEl.querySelectorAll(".ring");
+
+      rings.forEach(ring => {
+
+        const r = ring.getBoundingClientRect();
+
+        const rx = spiralX + px(r.left - sRect.left);
+        const ry = spiralY + px(r.top  - sRect.top);
+        const rw = px(r.width);
+        const rh = px(r.height);
+
+        // Ring pill body
+
+        oc.fillStyle = "#141414";
+        oc.beginPath();
+        oc.roundRect(rx, ry, rw, rh, px(999));
+        oc.fill();
+
+        // Two punch holes
+
+        oc.fillStyle = "#111111";
+
+        if (isMobile) {
+          // vertical ring → holes at top and bottom
+          const hw = px(4), hh = px(4), hgap = px(1);
+
+          oc.beginPath();
+          oc.ellipse(
+            rx + Math.round(rw / 2),
+            ry + hgap + Math.round(hh / 2),
+            Math.round(hw / 2), Math.round(hh / 2), 0, 0, Math.PI * 2
+          );
+          oc.fill();
+
+          oc.beginPath();
+          oc.ellipse(
+            rx + Math.round(rw / 2),
+            ry + rh - hgap - Math.round(hh / 2),
+            Math.round(hw / 2), Math.round(hh / 2), 0, 0, Math.PI * 2
+          );
+          oc.fill();
+
+        } else {
+          // horizontal ring → holes at left and right
+          const hw = px(8), hh = px(8), hgap = px(6);
+
+          oc.beginPath();
+          oc.ellipse(
+            rx + hgap + Math.round(hw / 2),
+            ry + px(1) + Math.round(hh / 2),
+            Math.round(hw / 2), Math.round(hh / 2), 0, 0, Math.PI * 2
+          );
+          oc.fill();
+
+          oc.beginPath();
+          oc.ellipse(
+            rx + rw - hgap - Math.round(hw / 2),
+            ry + px(1) + Math.round(hh / 2),
+            Math.round(hw / 2), Math.round(hh / 2), 0, 0, Math.PI * 2
+          );
+          oc.fill();
+        }
+      });
+
+      /* ---- RIGHT PAGE ---- */
+
+      const rpx = isMobile ? 0        : lw + sw;
+      const rpy = isMobile ? lh + sh  : 0;
+
+      oc.save();
+      oc.beginPath();
+
+      if (isMobile) {
+        oc.roundRect(rpx, rpy, rw, rh, [0, 0, px(18), px(18)]);
+      } else {
+        oc.roundRect(rpx, rpy, rw, rh, [0, px(14), px(14), 0]);
+      }
+
+      oc.clip();
+      oc.fillStyle = "#000";
+      oc.fillRect(rpx, rpy, rw, rh);
+      oc.drawImage(canvas, rpx, rpy, rw, rh);
+      oc.restore();
+
+      /* ---- Export ---- */
+
+      const a    = document.createElement("a");
+      a.download = "mundane-book.png";
+      a.href     = off.toDataURL("image/png");
+      a.click();
+    });
+
+    /* ===================================== */
+    /* RESET                                 */
+    /* ===================================== */
+
+    resetButton.addEventListener("click", () => {
+
+      canvas.classList.remove("show");
+      canvas.style.display       = "none";
+
+      loadingText.innerHTML      = "";
+      loadingText.style.display  = "block";
+      loadingText.style.opacity  = "0";
+
+      messageWrap.style.display  = "flex";
+      messageInput.style.opacity = "1";
+      messageInput.value         = "";
+
+      sendButton.style.display   = "block";
+
+      uploadedImage              = null;
+      imagePreview.src           = "";
+      imagePreview.style.display = "none";
+      uploadWrap.style.display   = "flex";
+      imageUpload.value          = "";
+
+      saveRow.classList.remove("show");
+      bottomBar.classList.remove("show");
+    });
 
   </script>
 
 </body>
 </html>
-
-
