@@ -175,6 +175,7 @@
   resize: none;
 
   padding: 0;
+  padding-top: calc(50% - 1.8em);
   margin: 0;
 
   text-align: center;
@@ -202,27 +203,29 @@
 
 @media (max-width: 860px) {
 
-.message-wrap {
-  position: relative;
-}
+  .message-wrap {
+    justify-content: center;
+    align-items: center;
+  }
 
-.center-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 64%;
-  text-align: center;
+  .message-input {
 
-  font-family: "Instrument Serif", serif;
-  font-size: 22px;
-  line-height: 1.6;
+    width: 64%;
+    height: 100%;
 
-  color: rgba(255,255,255,0.92);
+    padding: 0 !important;
+    margin: 0;
 
-  pointer-events: none;
-  white-space: pre-wrap;
-}
+    display: block;
+
+    font-size: 22px;
+    line-height: 34vh;
+
+    text-align: center;
+
+    overflow-y: auto;
+
+  }
 
 }
 
@@ -436,6 +439,7 @@
 
       .page {
         width: 92vw;
+        height: 34vh;
         max-height: 300px;
       }
 
@@ -548,7 +552,6 @@
         <div class="page right" id="pageRight">
 
           <div class="message-wrap" id="messageWrap">
-            <div class="center-text" id="centerText"></div>
             <textarea
               class="message-input"
               id="messageInput"
@@ -611,28 +614,37 @@
 
     let uploadedImage = null;
 
-function updateInputState() {
+function setMobileTypingMode() {
 
-  if (window.innerWidth >= 860) return;
-
-  const empty = messageInput.value.trim() === "";
-
-  // only affects placeholder state, NOT text position
-  messageInput.classList.toggle("is-empty", empty);
+  if (window.innerWidth < 860) {
+    messageInput.style.lineHeight = "1.6";
+  }
 
 }
 
+function resetMobilePlaceholderMode() {
+
+  if (
+    window.innerWidth < 860 &&
+    messageInput.value.trim() === ""
+  ) {
+    messageInput.style.lineHeight = "34vh";
+  }
+
+}
+
+messageInput.addEventListener("focus", setMobileTypingMode);
+
 messageInput.addEventListener("input", () => {
 
-  const text = messageInput.value;
-
-  document.getElementById("centerText").textContent = text;
+  setMobileTypingMode();
 
   messageInput.scrollTop = messageInput.scrollHeight;
 
 });
 
-updateInputState();
+messageInput.addEventListener("blur", resetMobilePlaceholderMode);
+
     /* ===================================== */
     /* IMAGE UPLOAD                          */
     /* ===================================== */
