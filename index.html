@@ -175,7 +175,6 @@
   resize: none;
 
   padding: 0;
-  padding-top: calc(50% - 1.8em);
   margin: 0;
 
   text-align: center;
@@ -208,24 +207,26 @@
     align-items: center;
   }
 
-  .message-input {
+.message-input {
 
-    width: 64%;
-    height: 100%;
+  width: 64%;
+  height: 100%;
 
-    padding: 0 !important;
-    margin: 0;
+  padding: 0 !important;
+  margin: 0;
 
-    display: block;
+  text-align: center;
 
-    font-size: 22px;
-    line-height: 34vh;
+  font-size: 22px;
+  line-height: 1.6;
 
-    text-align: center;
+  overflow-y: auto;
 
-    overflow-y: auto;
+  display: block;
 
-  }
+  /* IMPORTANT: removes fake centering shift */
+  padding-top: 0 !important;
+}
 
 }
 
@@ -439,7 +440,6 @@
 
       .page {
         width: 92vw;
-        height: 34vh;
         max-height: 300px;
       }
 
